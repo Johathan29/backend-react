@@ -1,0 +1,30 @@
+// backend/scripts/setUserRole.js
+const admin = require("firebase-admin");
+const path = require("path");
+
+// Importa tu clave de servicio
+  const serviceAccount = {
+    projectId: 'crudfirebaseangular-f567e',
+    clientEmail:'firebase-adminsdk-d9ge7@crudfirebaseangular-f567e.iam.gserviceaccount.com',
+    privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC7CgAJo60COjMS\nKl02Sd2HZjKCIzsYOFPJonbcHbA7cwNG79nQT7e/2d4x+b3JeF+FNhxSezYtEzKr\nqD0wCaarRcYklh1qTDyK5E3CmZxZ2qzc5KRAaelxHRN9SZkOl2imYP5G2V8D7B4V\n4DpkeMElQ3WaiR7THm6bn0LYJ3ULdlPtzaecycu7a2Fq5uSV0WIG6XtF+brXjkYi\nWYUYolgMhxapjkiL4niADWneK3IG7VeOQxETKu/wbhRhnUeVucrs+16FVfmIJ4XS\nbYJSoJZruxQBzul7cBCXG5MF14hNgzBj+w1Nu+Ld2w21ir3lyJ6Ei4dKjHszpNKI\np9t0Vb37AgMBAAECggEAB8XRHZVvNaX8hFc9W2mzapKNK8pSBN4mYT0+qkQTlEzh\nyHtkNltxu+fOa45A3FQDyDHo+GaFaFchZm/N5yanhfuW0eNpIoc7htwY/SrMDBHh\n2CYqS0D7ggdezXiXAzu4jh1+w6v53lxcHbWdR5qbEDTe+MaVANoFZ7M1IG13WDwG\n0R8LEoyfmV5gRxhiwubFHyGn+s6Pf2lSIvFggXb3quZVgrMQqkZ28YVpBCCzQZzP\nBgNBK72vMVXcC8SNBrbuY8Dn0I0CUdejVyYE5sn1N2VhWZ6AblHG43lXDEndOk31\nVmZusyhJE7nTC2oSXsO0zZ2yVk9HQpQKIL1A/XgSqQKBgQD0khifX3Dy/qqpC/x3\nBZHLhKyXWR5PuEhP2YAxzurqKtc2/IWJEaEWn6P2ozrhPp/Vd6WJb79RnCW1nXEd\nhRMRgUc1k59uS9wbBZvc/3r46SpP7HDwdvgSH8JKqnwFnqZ12+23aGO3Ev4Rz43y\n69HIxuOZhHxGgRngz7azU5wO2QKBgQDDx6DmECnJjr5nTSKOt6FLmkZfoNtjywW1\n9043DoxRvffWLdl6+A7KoyPLiVwPyiEtCcI34fEZmqJiF1m5nrs0rhWs015jHOdX\nLMF5QiWRWecgM0WfdJZV3AtziUh5gKU10ki7Z2PmC7ruh0ZdlGTB+KOP9uI8IvtM\nQxTOkzUW8wKBgGjI+5G1A6Co6he5kfawxTGMa6IAxdLkIt9LUfiFLfMcXc8qTFBY\n5ErcJRT0BLMi8Lo2JA+JeFAP9bwlc6RxMqVKXWcgE6vfBrPxKEF8mIRy6fUKWa09\nW7XwM39oIfEKc0mF7AiryiVTFtYstiXBUcWTKUrKD7DpeVvvwth8Vx2pAoGALo0m\nDe4j8YAWd/uYTvUMziw1tYFLCTR5/CV8nIzCAqG3715hiuK2qaoW1cuobzyxnMLo\nQl9f86WYHNjOhdtfSgxmrPxpQgnaXBkRO+LlieUllrt6P4r6QBodQvCOog1buytw\nDddsooOBhDv4GEIznwee5Jlge8oZlK2SoffQtM8CgYB31PQdhmHa8d2svklQAUCj\nxzFoq5k2pumIL2TjFpxzs/+0n3yhyX1TmlPh3D3C2OAPfixv4CJtdcWOSgjrY4jj\nqGR3JnOZtyjev0eoXV1/a+47Wg7fOQ1b36f8PhU0yF/4p1DesgBRzjIkRx/AZIWJ\n70mpvYdEMlPZa7IA4Hl8+A==\n-----END PRIVATE KEY-----\n",
+  };
+
+
+// Inicializa Firebase Admin SDK
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+async function setUserRole(uid, role) {
+  try {
+    await admin.auth().setCustomUserClaims(uid, { role });
+    console.log(`✅ Rol "${role}" asignado al usuario con UID: ${uid}`);
+  } catch (error) {
+    console.error("❌ Error asignando rol:", error);
+  }
+}
+
+// 👉 Reemplaza con el UID real de tu usuario
+await admin.auth().setCustomUserClaims(uid, { role });
+const userId = "UuEbl02xvQdcP8zTeZpCqD1d7x12";
+setUserRole(userId, "admin");
