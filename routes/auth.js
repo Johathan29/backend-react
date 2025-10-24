@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { loginUser, registerUser, verifyToken } = require('../controllers/authController');
+const { loginUser, registerUser, verifyToken,listarUsuarios } = require('../controllers/authController');
 
 // Registro
 router.post('/register', registerUser);
@@ -12,5 +12,7 @@ router.post('/login', loginUser);
 router.get('/profile', verifyToken, (req, res) => {
   res.json({ message: 'Bienvenido', user: req.user });
 });
-
+router.get('/getUsers', listarUsuarios, (res) => {
+  res.json({ message: 'Bienvenido', user: req.user });
+});
 module.exports = router;
