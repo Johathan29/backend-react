@@ -1,15 +1,7 @@
 
-import {
-  collection,
-  doc,
-  getDoc,
-  updateDoc,
-  addDoc,
-  Timestamp
-} from "firebase/firestore";
 const admin = require('firebase-admin');
 const db = admin.firestore();
-export const createSale = async (req, res) => {
+exports.createSale = async (req, res) => {
   try {
     const { cliente, productos, metodo_pago } = req.body;
 
@@ -20,8 +12,8 @@ export const createSale = async (req, res) => {
 
     // Verificar stock y actualizar
     for (const p of productos) {
-      const prodRef = doc(db, "Products", p.id);
-      const prodSnap = await getDoc(prodRef);
+      const prodRef = admin.doc(db, "Products", p.id);
+      const prodSnap = await admin.getDoc(prodRef);
 
       if (!prodSnap.exists()) {
         return res.status(404).json({ error: `Producto ${p.id} no encontrado` });
@@ -35,12 +27,12 @@ export const createSale = async (req, res) => {
       }
 
       // Descontar inventario
-      await updateDoc(prodRef, {
+      await admin.updateDoc(prodRef, {
         cantidad: prodData.cantidad - p.cantidad
       });
 
       // Registrar movimiento en inventory_logs
-      await addDoc(collection(db, "inventory_logs"), {
+      await admin.addDoc(collection(db, "inventory_logs"), {
         productoId: p.id,
         tipo: "salida",
         cantidad: p.cantidad,
@@ -50,7 +42,7 @@ export const createSale = async (req, res) => {
     }
 
     // Registrar venta
-    const saleRef = await addDoc(collection(db, "sales"), {
+    const saleRef = await admin.addDoc(collection(db, "sales"), {
       cliente,
       productos,
       metodo_pago,

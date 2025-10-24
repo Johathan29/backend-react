@@ -1,4 +1,4 @@
-const admin = require('firebase-admin');
+const admin = require('../firebaseAdmin');
 const jwt = require('jsonwebtoken');
 
 let userSessions = new Map(); // Guarda el último acceso por usuario (uid)
@@ -71,10 +71,11 @@ exports.verifyToken = (req, res, next) => {
 
 
 // Inicializa el SDK Admin
+if (!admin.apps.length) {
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
 });
-
+}
 // Función para listar todos los usuarios
 exports.listarUsuarios=async()=> {
   try {
@@ -92,5 +93,5 @@ exports.listarUsuarios=async()=> {
   }
 }
 
-listarUsuarios();
+
 
