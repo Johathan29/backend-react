@@ -1,7 +1,8 @@
-import express from "express";
-import { createSale } from "../controllers/salesController.js";
+const express = require('express');
 const router = express.Router();
+const createSale = require('../controllers/salesController.js');
 
-router.post("/", createSale);
 
-export default router;
+router.post("/", createSale.createSale);
+
+module.exports = router;
