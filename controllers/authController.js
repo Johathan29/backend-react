@@ -68,3 +68,29 @@ exports.verifyToken = (req, res, next) => {
     return res.status(401).json({ error: 'Token inválido o expirado' });
   }
 };
+
+
+// Inicializa el SDK Admin
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+});
+
+// Función para listar todos los usuarios
+exports.listarUsuarios=async()=> {
+  try {
+    const listUsersResult = await admin.auth().listUsers(1000); // hasta 1000 usuarios por lote
+    listUsersResult.users.forEach((userRecord) => {
+      console.log('Usuario:', userRecord.uid, userRecord.email);
+    });
+
+    if (listUsersResult.pageToken) {
+      // Llamar recursivamente si hay más usuarios
+      await listarUsuarios(listUsersResult.pageToken);
+    }
+  } catch (error) {
+    console.error("Error al listar usuarios:", error);
+  }
+}
+
+listarUsuarios();
+
